@@ -14,7 +14,7 @@ Esta API permite gerenciar pagamentos de maneira eficiente, seguindo padrões RE
 
 ### 1️⃣ **Clonar o Repositório**
 
-git clone https://github.com/seuusuario/api-pagamentos.git
+git clone https://github.com/Alessandr0sousa/APIPagaento.git
 cd api-pagamentos
 
 ### #️⃣ **Configurar Banco de Dados (H2)**
