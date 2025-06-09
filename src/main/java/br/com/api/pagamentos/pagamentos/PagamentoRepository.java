@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
 
     Pagamento findByCodigoDebito(Integer codigoDebito);
-    Page<Pagamento> getReferenceByAtivoTrue(PagamentoStatus status, Pageable pageable);
+    Page<Pagamento> getReferenceByStatus(PagamentoStatus status, Pageable pageable);
     Page<Pagamento> getReferenceByCpfCnpj(String cpfCnpj, Pageable pageable);
     Page<Pagamento> getReferenceByCodigoDebito(Integer codigoDebito, Pageable pageable);
 }

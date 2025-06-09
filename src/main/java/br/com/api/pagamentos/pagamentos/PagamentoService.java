@@ -24,7 +24,7 @@ public class PagamentoService {
             } else if (cpfCnpj != null) {
                 return repository.getReferenceByCpfCnpj(cpfCnpj, pageable).map(ListarPagamentos::new);
             } else if (status != null) {
-                return repository.getReferenceByAtivoTrue(status, pageable).map(ListarPagamentos::new);
+                return repository.getReferenceByStatus(status, pageable).map(ListarPagamentos::new);
             } else {
                 return repository.findAll(pageable).map(ListarPagamentos::new);
             }
