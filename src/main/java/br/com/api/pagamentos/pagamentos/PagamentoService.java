@@ -18,12 +18,23 @@ public class PagamentoService {
     @Autowired
     private PagamentoRepository repository;
 
-    public Page<ListarPagamentos> ListarPagamentos(Pageable pageable) {
-        return repository.getReferenceByAtivoTrue(pageable).map(ListarPagamentos::new);
-    }
+    public Page<ListarPagamentos> ListarPagamentos(Integer codigoDebito, String cpfCnpj, PagamentoStatus status, Pageable pageable) {
+            if (codigoDebito != null) {
+                return repository.getReferenceByCodigoDebito(codigoDebito, pageable).map(ListarPagamentos::new);
+            } else if (cpfCnpj != null) {
+                return repository.getReferenceByCpfCnpj(cpfCnpj, pageable).map(ListarPagamentos::new);
+            } else if (status != null) {
+                return repository.getReferenceByAtivoTrue(status, pageable).map(ListarPagamentos::new);
+            } else {
+                return repository.findAll(pageable).map(ListarPagamentos::new);
+            }
+        }
 
     public Pagamento receberPagamento(ReceberPagamento pagamento) {
         var dadosPagamento = new Pagamento(pagamento);
+
+        buscarPagamentoPeloCodigoDebito(dadosPagamento.getCodigoDebito());
+
         validarMetodoPagamento(dadosPagamento);
         return repository.save(dadosPagamento);
     }
@@ -63,4 +74,12 @@ public class PagamentoService {
         return repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Pagamento não encontrado"));
     }
+
+    private void buscarPagamentoPeloCodigoDebito(Integer codigoDebito){
+        var pagamentoExistente = repository.findByCodigoDebito(codigoDebito);
+        if (pagamentoExistente != null) {
+            throw new IllegalStateException("Pagamento " + codigoDebito+ " já registrado");
+        }
+    }
+
 }

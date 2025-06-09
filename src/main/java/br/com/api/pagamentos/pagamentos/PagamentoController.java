@@ -1,9 +1,9 @@
 package br.com.api.pagamentos.pagamentos;
 
+import br.com.api.pagamentos.enumerates.PagamentoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,8 +15,12 @@ public class PagamentoController {
     private PagamentoService service;
 
     @GetMapping
-    public ResponseEntity<Page<ListarPagamentos>> listarPagamentos(@PageableDefault(sort = {"dataPagamento"}) Pageable pageable) {
-        var listPage = service.ListarPagamentos(pageable);
+    public ResponseEntity<Page<ListarPagamentos>> listarPagamentos(
+            @RequestParam(required = false) Integer codigoDebito,
+            @RequestParam(required = false) String cpfCnpj,
+            @RequestParam(required = false) PagamentoStatus status,
+            Pageable pageable) {
+        var listPage = service.ListarPagamentos(codigoDebito, cpfCnpj, status, pageable);
         return ResponseEntity.ok(listPage);
     }
 
